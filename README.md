@@ -1,7 +1,11 @@
 # README
 
 ## Build the application: `bundle`
-## Run the application: `rails server`
+## Run the application:
+```
+rails dev:cache
+rails server
+```
 
 ## Run tests: `rails test`
 
