@@ -8,7 +8,11 @@ class EmailFormatDeriver
 
   def call(domain)
     known_formats = load_known_formats
-    known_formats[domain] || EmailFormat
+    format = known_formats[domain]
+
+    raise UnknownDomainError.new("email format unkown for #{domain}") if format.nil?
+
+    format
   end
 
   private
@@ -41,6 +45,6 @@ class EmailFormatDeriver
       return FirstNameInitialLastNameEmailFormat
     end
 
-    EmailFormat
+    raise UnknownFormatError.new("format not known turning #{full_name} into #{username}")
   end
 end
