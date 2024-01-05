@@ -17,6 +17,10 @@ class EmailsControllerTest < ActionDispatch::IntegrationTest
     check_case('Samory Kabir Jean George Ka', 'babbel.com', 'ska@babbel.com')
   end
 
+  test 'returns email for name containing symbol' do
+    check_case('Samory-Kabir Ka', 'google.com', 'samory-kabirka@google.com')
+  end
+
   test 'works for sample data' do
     check_case('Jane Doe', 'babbel.com', 'jdoe@babbel.com')
     check_case('Jay Arun', 'linkedin.com', 'jayarun@linkedin.com')
