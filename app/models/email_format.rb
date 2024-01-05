@@ -2,10 +2,10 @@
 
 class EmailFormat
   def self.matches?(first_name, last_name, username)
-    true
+    raise NotImplementedError
   end
 
   def self.apply(first_name, last_name, domain)
-    "#{first_name}#{last_name}@#{domain}".downcase.strip
+    raise NotImplementedError
   end
 end

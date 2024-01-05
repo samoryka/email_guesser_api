@@ -4,12 +4,11 @@ class EmailsController < ApplicationController
   end
 
   def derive
-    first_name, last_name = get_names
-    domain = derive_params[:company_domain]
-
     begin
+      domain = derive_params[:company_domain]
       format = EmailFormatDeriver.new.call(domain)
 
+      first_name, last_name = get_names
       @email = format.apply(first_name, last_name, domain)
       @error = nil
       render
