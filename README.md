@@ -1,5 +1,6 @@
 # README
 
+## Build the application: `bundle`
 ## Run the application: `rails server`
 
 ## Run tests: `rails test`
