@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class EmailFormat
+class FirstNameLastNameEmailFormat < EmailFormat
   def self.matches?(first_name, last_name, username)
-    true
+    "#{first_name}#{last_name}".downcase.strip == username
   end
 
   def self.apply(first_name, last_name, domain)

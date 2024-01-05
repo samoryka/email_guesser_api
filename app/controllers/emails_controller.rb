@@ -2,7 +2,7 @@ class EmailsController < ApplicationController
   def derive
     first_name, last_name = get_names
     domain = derive_params[:company_domain]
-    format = EmailFormatDeriver.new.call(first_name, last_name, domain)
+    format = EmailFormatDeriver.new.call(domain)
 
     @email = format.apply(first_name, last_name, domain)
     render

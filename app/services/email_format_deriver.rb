@@ -1,22 +1,46 @@
 # frozen_string_literal: true
 
 class EmailFormatDeriver
-  @@formats = nil
 
   def initialize(known_emails_provider = KnownEmailsProvider.new)
-    if @@formats.nil?
+    @known_emails_provider = known_emails_provider
+  end
 
-      @@formats = {}
-      known_emails = known_emails_provider.call
-      known_emails.each do |full_name, email|
+  def call(domain)
+    known_formats = load_known_formats
+    known_formats[domain] || EmailFormat
+  end
+
+  private
+
+  def load_known_formats
+    Rails.cache.fetch('email_known_formats', expires_in: 30.minutes) do
+      known_emails = @known_emails_provider.call
+
+      formats = known_emails.map do |full_name, email|
         username, domain = email.split('@')
+        format = derive_format(full_name, username)
 
-        @@formats[domain] = EmailFormat
+        [domain, format]
       end
+
+      formats.to_h
     end
   end
 
-  def call(first_name, last_name, domain)
-    @@formats[domain] || EmailFormat
+  def derive_format(full_name, username)
+    names = full_name.split
+    first_name = names.first
+    last_name = names.last
+
+    if FirstNameLastNameEmailFormat.matches?(first_name, last_name, username)
+      return FirstNameLastNameEmailFormat
+    end
+
+    if FirstNameInitialLastNameEmailFormat.matches?(first_name, last_name, username)
+      return FirstNameInitialLastNameEmailFormat
+    end
+
+    EmailFormat
   end
 end
