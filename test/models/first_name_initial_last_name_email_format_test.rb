@@ -14,6 +14,6 @@ class FirstNameInitialLastNameEmailFormatTest < Minitest::Test
   end
 
   def test_formats_email
-    assert_equal("ska@babbel.com", FirstNameInitialLastNameEmailFormat.apply('Samory', 'Ka', 'babbel.com'))
+    assert_equal('ska@babbel.com', FirstNameInitialLastNameEmailFormat.apply('Samory', 'Ka', 'babbel.com'))
   end
 end
