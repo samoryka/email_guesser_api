@@ -2,7 +2,15 @@ require "test_helper"
 
 class EmailsControllerTest < ActionDispatch::IntegrationTest
   test 'returns error for unknown domain' do
-    check_error_case('Samory Ka', 'unknowndomain.com', 'samoryka@unknowndomain.com')
+    check_error_case('Samory Ka', 'unknowndomain.com', 'unknownDomain')
+  end
+
+  test 'returns error for empty name' do
+    check_error_case('', 'babbel.com', 'incorrectFullName')
+  end
+
+  test 'returns error for single name' do
+    check_error_case('Samory', 'babbel.com', 'incorrectFullName')
   end
 
   test 'returns email for first_name_last_name format' do
@@ -31,7 +39,7 @@ class EmailsControllerTest < ActionDispatch::IntegrationTest
     check_case('Nina Simons', 'babbel.com', 'nsimons@babbel.com')
     check_case('Priya Kuber', 'linkedin.com', 'priyakuber@linkedin.com')
     check_case('Matthew Hall', 'google.com', 'matthewhall@google.com')
-    check_error_case('Robert Miller', 'slideshare.net', 'robertmiller@slideshare.net')
+    check_error_case('Robert Miller', 'slideshare.net', 'unknownDomain')
   end
 
   test 'returns error when domain not known' do
@@ -49,12 +57,12 @@ class EmailsControllerTest < ActionDispatch::IntegrationTest
     assert_nil response['error']
   end
 
-  def check_error_case(full_name, company_domain, expected_email)
+  def check_error_case(full_name, company_domain, expected_error)
     post '/derive', params: { full_name: full_name, company_domain: company_domain }, as: :json
 
     response = JSON.parse(@response.body)
     assert_response :bad_request
     assert_nil response['email']
-    assert_equal 'unknownDomain', response['error']
+    assert_equal expected_error, response['error']
   end
 end
