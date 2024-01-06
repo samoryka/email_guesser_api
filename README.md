@@ -30,4 +30,4 @@ rails server
     - Names written with alphabets other than the Latin one
     - Collisions: "Gina Doodle" and "George Doodle" could be both turned into "gdoodle" with one of the formats, we'd
       need a more complex system to handle these cases
-    - Most likely other things I'm not seeing right now :)
+- Most likely other things I'm not seeing right now :)
